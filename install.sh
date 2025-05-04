@@ -6,11 +6,16 @@ WALLPAPER_NAME="wallpaper.jpg"
 REPO_SSH="git@github.com:s1ghty/dotfiles.git"
 
 # === 1. Clone dotfiles ===
-echo "[1] Cloning dotfiles..."
-git clone "$REPO_SSH" "$DOTFILES_DIR" || {
-    echo "Failed to clone dotfiles. Exiting."
-    exit 1
-}
+echo "[1] Checking dotfiles directory..."
+if [ -d "$DOTFILES_DIR/.git" ]; then
+    echo "Dotfiles already present at $DOTFILES_DIR. Skipping clone."
+else
+    echo "Cloning dotfiles..."
+    git clone "$REPO_SSH" "$DOTFILES_DIR" || {
+        echo "Failed to clone dotfiles. Exiting."
+        exit 1
+    }
+fi
 
 # === 2. Symlink configs ===
 echo "[2] Symlinking configs..."
@@ -58,4 +63,3 @@ fi
 
 # === 5. Done ===
 echo "✅ Setup complete. You may want to restart Hyprland to apply changes."
-
