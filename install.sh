@@ -4,7 +4,7 @@ DOTFILES_DIR="$HOME/dotfiles"
 WALLPAPER_NAME="wallpaper.jpg"
 REPO_SSH="git@github.com:s1ghty/dotfiles.git"
 
-# cloning dotfiles (if theyre not already xD)
+# cloning dotfiles (if they're not already xD)
 echo "[1] Cloning dotfiles..."
 if [ -d "$DOTFILES_DIR/.git" ]; then
     echo "Dotfiles already cloned. Skipping."
@@ -28,15 +28,15 @@ done
 
 # wallpapers
 echo "[3] Copying wallpaper..."
-mkdir -p ~/Pictures/wallpapers
-cp "$DOTFILES_DIR/$WALLPAPER_NAME" ~/Pictures/wallpapers/
+mkdir -p ~/Pictures
+cp "$DOTFILES_DIR/$WALLPAPER_NAME" ~/Pictures/
 
 # packages
 echo "[4] Installing packages (optional)..."
 read -p "Install packages using pacman and yay? [y/N] " answer
 if [[ "$answer" =~ ^[Yy]$ ]]; then
     sudo pacman -S --needed \
-  git alacritty hyprland mako neofetch \
+  git alacritty hyprland mako neofetch hyprpaper \
   waybar wofi brightnessctl pipewire pipewire-pulse \
   ttf-jetbrains-mono-nerd wireplumber nwg-look \
   imagemagick chafa cmake meson cpio pkgconfig
