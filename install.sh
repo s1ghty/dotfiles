@@ -1,46 +1,37 @@
 #!/bin/bash
-
-# === CONFIG ===
+# config
 DOTFILES_DIR="$HOME/dotfiles"
 WALLPAPER_NAME="wallpaper.jpg"
 REPO_SSH="git@github.com:s1ghty/dotfiles.git"
 
-# === 1. Clone dotfiles ===
-echo "[1] Checking dotfiles directory..."
+# cloning dotfiles (if theyre not already xD)
+echo "[1] Cloning dotfiles..."
 if [ -d "$DOTFILES_DIR/.git" ]; then
-    echo "Dotfiles already present at $DOTFILES_DIR. Skipping clone."
+    echo "Dotfiles already cloned. Skipping."
 else
-    echo "Cloning dotfiles..."
     git clone "$REPO_SSH" "$DOTFILES_DIR" || {
         echo "Failed to clone dotfiles. Exiting."
         exit 1
     }
 fi
 
-# === 2. Symlink configs ===
+# symlinking
 echo "[2] Symlinking configs..."
 
 mkdir -p ~/.config
+CONFIG_DIR="$DOTFILES_DIR/.config"
 
-ln -sf "$DOTFILES_DIR/Thunar" ~/.config/Thunar
-ln -sf "$DOTFILES_DIR/alacritty" ~/.config/alacritty
-ln -sf "$DOTFILES_DIR/gtk-3.0" ~/.config/gtk-3.0
-ln -sf "$DOTFILES_DIR/gtk-4.0" ~/.config/gtk-4.0
-ln -sf "$DOTFILES_DIR/hypr" ~/.config/hypr
-ln -sf "$DOTFILES_DIR/mako" ~/.config/mako
-ln -sf "$DOTFILES_DIR/neofetch" ~/.config/neofetch
-ln -sf "$DOTFILES_DIR/nwg-look" ~/.config/nwg-look
-ln -sf "$DOTFILES_DIR/rofi" ~/.config/rofi
-ln -sf "$DOTFILES_DIR/waybar" ~/.config/waybar
-ln -sf "$DOTFILES_DIR/wofi" ~/.config/wofi
-# Add more as needed...
+for dir in "$CONFIG_DIR"/*; do
+    name=$(basename "$dir")
+    ln -sf "$dir" "$HOME/.config/$name"
+done
 
-# === 3. Copy wallpaper ===
+# wallpapers
 echo "[3] Copying wallpaper..."
 mkdir -p ~/Pictures/wallpapers
 cp "$DOTFILES_DIR/$WALLPAPER_NAME" ~/Pictures/wallpapers/
 
-# === 4. (Optional) Install packages ===
+# packages
 echo "[4] Installing packages (optional)..."
 read -p "Install packages using pacman and yay? [y/N] " answer
 if [[ "$answer" =~ ^[Yy]$ ]]; then
@@ -61,5 +52,5 @@ if [[ "$answer" =~ ^[Yy]$ ]]; then
     yay -S rofi-lbonn-wayland-git papirus-folders-git
 fi
 
-# === 5. Done ===
+
 echo "✅ Setup complete. You may want to restart Hyprland to apply changes."
