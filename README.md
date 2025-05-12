@@ -10,4 +10,5 @@ cd dotfiles
 
 ./install.sh
 
-And after reboot the system!
+And after reboot the system! (Check if everything works fine, and also change the directory for the wallpaper)
+
